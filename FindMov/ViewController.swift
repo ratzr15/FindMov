@@ -20,7 +20,7 @@ class ViewController: UIViewController {
         sBar.backgroundColor           = .black
         sBar.placeholder               = "SEARCH"
         sBar.delegate                  = self
-        sBar.tintColor                 = .white
+        sBar.tintColor                 = .black
         UITextField.appearance(whenContainedInInstancesOf: [type(of: sBar)]).tintColor = .black
         sBar.textField.textAlignment   = .natural
         sBar.textField.clearButtonMode = .always
@@ -30,7 +30,7 @@ class ViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
     
-    fileprivate let viewModel = ProfileViewModel()
+    fileprivate let viewModel = MovieViewModel()
 
     override func viewDidLoad() {
         super.viewDidLoad()
