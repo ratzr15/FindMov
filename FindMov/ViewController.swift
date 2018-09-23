@@ -1,10 +1,12 @@
-//
-//  ViewController.swift
-//  FindMov
-//
-//  Created by Rathish Kannan on 9/20/18.
-//  Copyright © 2018 Rathish Kannan. All rights reserved.
-//
+//----------------------------------------------------------------------------------
+//  File Name         :  ViewController.swift
+//  Description       :  Controller for Movie Search
+//                       1. Manages -> View for list /Search Bar/ Recent items
+//  Author            :  Rathish Kannan
+//  E-mail            :  rathishnk@hotmail.co.in
+//  Dated             :  23rd Sep 2018
+//  Copyright (c) 2018 Rathish Kannan. All rights reserved.
+//-----------------------------------------------------------------------------------
 
 import UIKit
 
@@ -25,10 +27,22 @@ class ViewController: UIViewController {
         navigationItem.backBarButtonItem?.tintColor = UIColor.white
         return sBar
     }
+
+    @IBOutlet weak var tableView: UITableView!
     
+    fileprivate let viewModel = ProfileViewModel()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         _ = searchBar
+        
+        tableView?.dataSource = viewModel
+        
+        tableView?.estimatedRowHeight = 100
+        tableView?.rowHeight = UITableViewAutomaticDimension
+        
+        tableView?.register(NamePictureCell.nib, forCellReuseIdentifier: NamePictureCell.identifier)
+
     }
 
     override func didReceiveMemoryWarning() {
@@ -57,6 +71,16 @@ extension ViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchBar.setShowsCancelButton(false, animated: true)
         searchBar.resignFirstResponder()
+        
+        let manager = SearchManager()
+        
+        manager.searchMovies(query: searchBar.text ?? "", page: ""){  (results) in
+            
+            self.viewModel.setUpData(results: results)
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        }
 
     }
     
