@@ -12,18 +12,20 @@
 import Foundation
 import UIKit
 
-enum ProfileViewModelItemType {
+enum ListViewModelItemType {
     case movieDetails
+    case recentItems
+    case noResult
 }
 
-protocol ProfileViewModelItem {
-    var type: ProfileViewModelItemType { get }
+protocol ListViewModelItem {
+    var type: ListViewModelItemType { get }
     var sectionTitle: String { get }
     var rowCount: Int { get }
 }
 
 class MovieViewModel: NSObject {
-    var items = [ProfileViewModelItem]()
+    var items = [ListViewModelItem]()
     
     var results : [Results] = [] {
         didSet {
@@ -45,17 +47,25 @@ class MovieViewModel: NSObject {
         }else{
             return
         }
+        
     }
     
     func setUpData(results: [Results?]){
         items.removeAll()
-        for result in results {
-            if let name = result?.title, let overView = result?.overview, let date = result?.release_date  {
-                let pictureUrl = "http://image.tmdb.org/t/p/w92\(result?.poster_path ?? "")"
-                let nameAndPictureItem = ProfileViewModelNamePictureItem(name: name, pictureUrl: pictureUrl, overView: overView, date: date)
-                items.append(nameAndPictureItem)
+        if results.count > 0 {
+            for result in results {
+                if let name = result?.title, let overView = result?.overview, let date = result?.release_date  {
+                    let pictureUrl = "http://image.tmdb.org/t/p/w92\(result?.poster_path ?? "")"
+                    let nameAndPictureItem = ProfileViewModelNamePictureItem(name: name, pictureUrl: pictureUrl, overView: overView, date: date)
+                    items.append(nameAndPictureItem)
+                }
             }
+        }else{
+            //Handle no results
+            print("❌")
         }
+        
+
     }
     
 }
@@ -77,6 +87,10 @@ extension MovieViewModel: UITableViewDataSource {
                 cell.item = item
                 return cell
             }
+        case .recentItems:
+            return UITableViewCell()
+        case .noResult:
+            return UITableViewCell()
         }
         return UITableViewCell()
     }
@@ -87,8 +101,8 @@ extension MovieViewModel: UITableViewDataSource {
 }
 
 
-class ProfileViewModelNamePictureItem: ProfileViewModelItem {
-    var type: ProfileViewModelItemType {
+class ProfileViewModelNamePictureItem: ListViewModelItem {
+    var type: ListViewModelItemType {
         return .movieDetails
     }
     
