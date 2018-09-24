@@ -14,7 +14,7 @@ class NamePictureCell: UITableViewCell {
     @IBOutlet weak var pictureImageView: UIImageView?
     @IBOutlet weak var title: UILabel!
     
-    var item: ProfileViewModelItem? {
+    var item: ListViewModelItem? {
         didSet {
             guard let item = item as? ProfileViewModelNamePictureItem else {
                 return
