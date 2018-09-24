@@ -141,6 +141,7 @@ class SearchManager {
                 completion(movies?.results ?? [])
                 print("Success  ✅ \n \n \n \(movies?.results?.count ?? 1)")
             case .Failure(_):
+                completion([])
                 print("Failure  ❌\(SErrorType.CannotFetch("Error"))")
             }
         }
