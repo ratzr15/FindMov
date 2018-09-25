@@ -75,7 +75,10 @@ class SearchManager {
         print("Requesting 🚀 \(url)")
         
         SearchManager.getDataRequest(url: url, token: nil, contentType: nil, auth: false) { (data, err) in
-            guard let response = data else { return }
+            guard let response = data else {
+                completionHandler(SResults.Failure(error: SErrorType.CannotFetch("An Error Occured")))
+                return
+            }
             do {
                 let decoder = JSONDecoder()
                 let decoded = try decoder.decode(Meta.self, from: response)
@@ -87,9 +90,8 @@ class SearchManager {
                 }else{
                     completionHandler(SResults.Success(result: decoded))
                 }
-                print(decoded)
-            }catch let err {
-                print("Err", err)
+            }catch _ {
+                completionHandler(SResults.Failure(error: SErrorType.CannotFetch("An Error Occured")))
             }
         }
     }
@@ -112,7 +114,6 @@ class SearchManager {
         }
         var request = URLRequest(url: urlStr)
         request.httpMethod = "GET"
-        debugPrint(request)
         if let content = contentType {
             request.addValue(content.isEmpty ? "application/json":content, forHTTPHeaderField: "Content-Type")
         }else{
@@ -120,8 +121,14 @@ class SearchManager {
         }
         
         let task = session.dataTask(with: request as URLRequest, completionHandler: { data, response, error in
-            guard error == nil else {return}
-            guard let data = data else {return}
+            guard error == nil else{
+                completionHandler(nil, error)
+                return
+            }
+            guard let data = data else {
+                completionHandler(nil, error)
+                return
+            }
             do {
                 completionHandler(data, error)
             }
@@ -130,15 +137,15 @@ class SearchManager {
     }
 
     
-    func searchMovies(query :String, page:String, completion: @escaping ([Results]) -> Void){
+    func searchMovies(query :String, page:String, completion: @escaping (Meta?) -> Void){
         let param = SearchQuery(query: query, page: page, id: "", count: "")
         self.fetchMovies(params: param) { (result: SResults<Meta?>) -> Void in
             switch (result) {
             case .Success(let movies):
-                completion(movies?.results ?? [])
-                print("Success  ✅ \n \n \n \(movies?.results?.count ?? 1)")
+                completion(movies )
+                print("Success  ✅ \n Total \(movies?.results?.count ?? 1) \n PageTotal \(movies?.total_pages ?? 1)")
             case .Failure(_):
-                completion([])
+                completion(nil)
                 print("Failure  ❌\(SErrorType.CannotFetch("Error"))")
             }
         }
