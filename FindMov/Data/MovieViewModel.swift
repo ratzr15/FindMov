@@ -29,31 +29,17 @@ class MovieViewModel: NSObject {
     var kImageDomain = "http://image.tmdb.org/t/p/w92"
     let manager = SearchManager()
 
-    var results : [Results] = [] {
-        didSet {
-            //Equate if needed±
-        }
-    }
-
     override init() {
-        super.init()
-        if results.count > 0{
-            items.removeAll()
-            for result in results {
-                if let name = result.title, let overView = result.overview, let date = result.release_date {
-                    let pictureUrl = "\(kImageDomain)\(result.poster_path ?? "")"
-                    let nameAndPictureItem = MovieDetailsItem(name: name, pictureUrl: pictureUrl, overView: overView, date: date)
-                    items.append(nameAndPictureItem)
-                }
-            }
-        }else{
-            return
-        }
-        
+        super.init()        
     }
     
+    /// Requirement (1 & 3)
+    ///
+    /// - Parameters:
+    ///   - results: Results - title, overview, Poster, date
+    ///   - query: searched term
     func setUpData(results: [Results?], forQuery query: String){
-        items.removeAll()
+        items = items.filter { $0.type == .movieDetails }
         if results.count > 0 {
             for result in results {
                 if let name = result?.title, let overView = result?.overview, let date = result?.release_date  {
@@ -74,10 +60,11 @@ class MovieViewModel: NSObject {
     }
     
     func setUpRecentItems(completion:@escaping () -> ()) -> (){
+        items = items.filter { $0.type == .recentItems }
         let recents = manager.retriveRecentSearch() as! [String]
         for recent in recents {
             let nameAndPictureItem = RecentItem(name:recent)
-            items.insert(nameAndPictureItem, at: 0)
+            items.append(nameAndPictureItem)
         }
         completion()
     }
@@ -115,6 +102,7 @@ extension MovieViewModel: UITableViewDataSource {
                 }
                 return cell
             }()
+            cell.selectionStyle = .none
             cell.textLabel?.text = item.sectionTitle
             return cell
         case .noResult:
@@ -127,7 +115,6 @@ extension MovieViewModel: UITableViewDataSource {
         return items[section].type == .recentItems ? "" : items[section].sectionTitle
     }
 }
-
 
 //MARK: - VM
 class MovieDetailsItem: ListViewModelItem {
