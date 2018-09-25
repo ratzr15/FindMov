@@ -107,7 +107,7 @@ class SearchManager {
         let ephemeralConfiguration = URLSessionConfiguration.ephemeral
         let session = URLSession(configuration: ephemeralConfiguration)
         guard let urlStr = URL(string: url.replacingOccurrences(of: " ", with: "")) else {
-            assertionFailure("Malformed URL")
+           /*assertionFailure("Malformed URL")*/
             completionHandler( nil, nil)
             return
         }
@@ -141,6 +141,7 @@ class SearchManager {
                 completion(movies?.results ?? [])
                 print("Success  ✅ \n \n \n \(movies?.results?.count ?? 1)")
             case .Failure(_):
+                completion([])
                 print("Failure  ❌\(SErrorType.CannotFetch("Error"))")
             }
         }

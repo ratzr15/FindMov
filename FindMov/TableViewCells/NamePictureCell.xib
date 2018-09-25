@@ -23,11 +23,12 @@
                 <rect key="frame" x="0.0" y="0.0" width="444" height="314.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView opaque="NO" clipsSubviews="YES" contentMode="scaleAspectFill" translatesAutoresizingMaskIntoConstraints="NO" id="Nlx-Gx-qZh">
+                    <imageView opaque="NO" clipsSubviews="YES" contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="Nlx-Gx-qZh">
                         <rect key="frame" x="0.0" y="0.0" width="138" height="168"/>
-                        <color key="backgroundColor" red="0.92538958790000003" green="0.92554813619999998" blue="0.92537957429999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <accessibility key="accessibilityConfiguration" hint="" identifier="C1A81C57-B853-4EF1-B656-C98CEC241A5A-asset" label=""/>
                         <constraints>
+                            <constraint firstAttribute="width" constant="138" id="Obs-vP-LQn"/>
                             <constraint firstAttribute="height" constant="168" id="gwj-Z0-PcA"/>
                         </constraints>
                     </imageView>
@@ -46,9 +47,7 @@
                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 <constraints>
                     <constraint firstItem="Nlx-Gx-qZh" firstAttribute="leading" secondItem="urk-Ti-LfO" secondAttribute="leading" id="5de-w5-tjS"/>
-                    <constraint firstItem="TOX-D4-1Rg" firstAttribute="trailing" secondItem="Nlx-Gx-qZh" secondAttribute="trailing" constant="286" id="ERt-Ll-GzV"/>
                     <constraint firstItem="aGz-u8-eU0" firstAttribute="top" secondItem="Nlx-Gx-qZh" secondAttribute="bottom" constant="32" id="SUG-TS-PFy"/>
-                    <constraint firstAttribute="trailing" secondItem="Nlx-Gx-qZh" secondAttribute="trailing" constant="306" id="SZt-lK-zCt"/>
                     <constraint firstItem="Nlx-Gx-qZh" firstAttribute="top" secondItem="urk-Ti-LfO" secondAttribute="top" id="VrD-rV-VlH"/>
                     <constraint firstAttribute="trailingMargin" secondItem="aGz-u8-eU0" secondAttribute="trailing" constant="16" id="YXP-xb-kOp"/>
                     <constraint firstAttribute="bottomMargin" secondItem="aGz-u8-eU0" secondAttribute="bottom" constant="32" id="aID-Kv-7ce"/>
@@ -58,6 +57,9 @@
                 </constraints>
                 <edgeInsets key="layoutMargins" top="0.0" left="0.0" bottom="0.0" right="0.0"/>
             </tableViewCellContentView>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="TOX-D4-1Rg" secondAttribute="trailing" constant="20" id="ACN-Qt-SwD"/>
+            </constraints>
             <edgeInsets key="layoutMargins" top="0.0" left="0.0" bottom="0.0" right="0.0"/>
             <connections>
                 <outlet property="overView" destination="aGz-u8-eU0" id="xlB-Lu-hIM"/>
