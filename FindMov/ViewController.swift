@@ -13,17 +13,17 @@ import UIKit
 class ViewController: UIViewController {
 
     var searchBar: UISearchBar {
-        guard let sBar =  navigationItem.titleView as? UISearchBar else {
+        guard let sBar                                                                 = navigationItem.titleView as? UISearchBar else {
             assertionFailure("UINavigationController not embedded!")
             return UISearchBar()
         }
-        sBar.backgroundColor           = .black
-        sBar.placeholder               = "SEARCH"
-        sBar.delegate                  = self
-        sBar.tintColor                 = .black
+        sBar.backgroundColor                                                           = .black
+        sBar.placeholder                                                               = "SEARCH"
+        sBar.delegate                                                                  = self
+        sBar.tintColor                                                                 = .orange
         UITextField.appearance(whenContainedInInstancesOf: [type(of: sBar)]).tintColor = .black
-        sBar.textField.textAlignment   = .natural
-        sBar.textField.clearButtonMode = .always
+        sBar.textField.textAlignment                                                   = .natural
+        sBar.textField.clearButtonMode                                                 = .always
         navigationItem.backBarButtonItem?.tintColor = UIColor.white
         return sBar
     }
@@ -61,7 +61,7 @@ extension ViewController: UISearchBarDelegate {
     }
     
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-        
+
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
