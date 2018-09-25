@@ -38,9 +38,6 @@ class NamePictureCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        
-        pictureImageView?.contentMode = .scaleAspectFit
-        pictureImageView?.backgroundColor = UIColor.lightGray
     }
 
     override func prepareForReuse() {

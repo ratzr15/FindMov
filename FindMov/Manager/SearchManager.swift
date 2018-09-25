@@ -107,7 +107,7 @@ class SearchManager {
         let ephemeralConfiguration = URLSessionConfiguration.ephemeral
         let session = URLSession(configuration: ephemeralConfiguration)
         guard let urlStr = URL(string: url.replacingOccurrences(of: " ", with: "")) else {
-            assertionFailure("Malformed URL")
+           /*assertionFailure("Malformed URL")*/
             completionHandler( nil, nil)
             return
         }
