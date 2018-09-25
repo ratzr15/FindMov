@@ -23,6 +23,8 @@
 		AE6033CA2157C5CA00AD1263 /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE6033C92157C5CA00AD1263 /* UIImage+Extension.swift */; };
 		AE6033CB2157C5CA00AD1263 /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE6033C92157C5CA00AD1263 /* UIImage+Extension.swift */; };
 		AE6033CC2157C5CA00AD1263 /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE6033C92157C5CA00AD1263 /* UIImage+Extension.swift */; };
+		AE85CD66215A63BE001BAEA2 /* SearchManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE6033B821578CA900AD1263 /* SearchManager.swift */; };
+		AE85CD67215A63BE001BAEA2 /* SearchManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE6033B821578CA900AD1263 /* SearchManager.swift */; };
 		AEA021FC2153AA1900F5941D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEA021FB2153AA1900F5941D /* AppDelegate.swift */; };
 		AEA021FE2153AA1900F5941D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEA021FD2153AA1900F5941D /* ViewController.swift */; };
 		AEA022012153AA1900F5941D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AEA021FF2153AA1900F5941D /* Main.storyboard */; };
@@ -365,6 +367,7 @@
 				AE6033CB2157C5CA00AD1263 /* UIImage+Extension.swift in Sources */,
 				AE6033BF2157936200AD1263 /* Meta.swift in Sources */,
 				AE6033C6215797B800AD1263 /* SError.swift in Sources */,
+				AE85CD66215A63BE001BAEA2 /* SearchManager.swift in Sources */,
 				AE6033C22157936200AD1263 /* Results.swift in Sources */,
 				AEC2FBDC2153D36000528058 /* NamePictureCell.swift in Sources */,
 			);
@@ -380,6 +383,7 @@
 				AE6033CC2157C5CA00AD1263 /* UIImage+Extension.swift in Sources */,
 				AE6033C02157936200AD1263 /* Meta.swift in Sources */,
 				AE6033C7215797B800AD1263 /* SError.swift in Sources */,
+				AE85CD67215A63BE001BAEA2 /* SearchManager.swift in Sources */,
 				AE6033C32157936200AD1263 /* Results.swift in Sources */,
 				AEC2FBDD2153D36000528058 /* NamePictureCell.swift in Sources */,
 			);
