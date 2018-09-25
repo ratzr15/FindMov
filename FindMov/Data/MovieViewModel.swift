@@ -26,7 +26,8 @@ protocol ListViewModelItem {
 
 class MovieViewModel: NSObject {
     var items = [ListViewModelItem]()
-    
+    var kImageDomain = "http://image.tmdb.org/t/p/w92"
+
     var results : [Results] = [] {
         didSet {
             //Equate if needed±
@@ -39,7 +40,7 @@ class MovieViewModel: NSObject {
             items.removeAll()
             for result in results {
                 if let name = result.title, let overView = result.overview, let date = result.release_date {
-                    let pictureUrl = "http://image.tmdb.org/t/p/w92\(result.poster_path ?? "")"
+                    let pictureUrl = "\(kImageDomain)\(result.poster_path ?? "")"
                     let nameAndPictureItem = ProfileViewModelNamePictureItem(name: name, pictureUrl: pictureUrl, overView: overView, date: date)
                     items.append(nameAndPictureItem)
                 }
@@ -62,6 +63,8 @@ class MovieViewModel: NSObject {
             }
         }else{
             //Handle no results
+            let noResult = NoResultsItem(name: "No Results found for your search...")
+            items.append(noResult)
             print("❌")
         }
         
@@ -128,3 +131,22 @@ class ProfileViewModelNamePictureItem: ListViewModelItem {
 }
 
 
+class NoResultsItem: ListViewModelItem {
+    var type: ListViewModelItemType {
+        return .noResult
+    }
+    
+    var sectionTitle: String {
+        return self.name
+    }
+    
+    var rowCount: Int {
+        return 0
+    }
+    
+    var name: String
+    
+    init(name: String) {
+        self.name = name
+    }
+}
