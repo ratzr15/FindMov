@@ -58,8 +58,9 @@ typealias SResultsCompletionHandler = (SResults<Meta?>) -> Void
 
 class SearchManager {
     
-    var kApiKey = "e46538d8b9bd8e858da9e894eda67212"
-    
+    let kApiKey = "e46538d8b9bd8e858da9e894eda67212"
+    let kMaxRecentItems = 10
+
     /// Search API Req: https://api.themoviedb.org/3/search/movie?api_key=e46538d8b9bd8e858da9e894eda67212&language=en-US&query=avatarasdqasa&page=2&include_adult=false
     ///
     /// - Parameters:
@@ -70,12 +71,14 @@ class SearchManager {
             assertionFailure("SearchQuery Missing")
             return
         }
-
         let url = setURL(model: param)
         print("Requesting 🚀 \(url)")
         
         SearchManager.getDataRequest(url: url, token: nil, contentType: nil, auth: false) { (data, err) in
-            guard let response = data else { return }
+            guard let response = data else {
+                completionHandler(SResults.Failure(error: SErrorType.CannotFetch("An Error Occured")))
+                return
+            }
             do {
                 let decoder = JSONDecoder()
                 let decoded = try decoder.decode(Meta.self, from: response)
@@ -87,12 +90,10 @@ class SearchManager {
                 }else{
                     completionHandler(SResults.Success(result: decoded))
                 }
-                print(decoded)
-            }catch let err {
-                print("Err", err)
+            }catch _ {
+                completionHandler(SResults.Failure(error: SErrorType.CannotFetch("An Error Occured")))
             }
         }
-
     }
     
     /// getDataRequest - Decodable Result
@@ -113,7 +114,6 @@ class SearchManager {
         }
         var request = URLRequest(url: urlStr)
         request.httpMethod = "GET"
-        debugPrint(request)
         if let content = contentType {
             request.addValue(content.isEmpty ? "application/json":content, forHTTPHeaderField: "Content-Type")
         }else{
@@ -121,8 +121,14 @@ class SearchManager {
         }
         
         let task = session.dataTask(with: request as URLRequest, completionHandler: { data, response, error in
-            guard error == nil else {return}
-            guard let data = data else {return}
+            guard error == nil else{
+                completionHandler(nil, error)
+                return
+            }
+            guard let data = data else {
+                completionHandler(nil, error)
+                return
+            }
             do {
                 completionHandler(data, error)
             }
@@ -131,17 +137,15 @@ class SearchManager {
     }
 
     
-    func searchMovies(query :String, page:String, completion: @escaping ([Results]) -> Void){
-        
+    func searchMovies(query :String, page:String, completion: @escaping (Meta?) -> Void){
         let param = SearchQuery(query: query, page: page, id: "", count: "")
-
         self.fetchMovies(params: param) { (result: SResults<Meta?>) -> Void in
             switch (result) {
             case .Success(let movies):
-                completion(movies?.results ?? [])
-                print("Success  ✅ \n \n \n \(movies?.results?.count ?? 1)")
+                completion(movies )
+                print("Success  ✅ \n Total \(movies?.results?.count ?? 1) \n PageTotal \(movies?.total_pages ?? 1)")
             case .Failure(_):
-                completion([])
+                completion(nil)
                 print("Failure  ❌\(SErrorType.CannotFetch("Error"))")
             }
         }
@@ -160,5 +164,45 @@ class SearchManager {
         let url = baseurl + key + lang + age + page + query
         
         return url
+    }
+}
+
+//MARK: - Recent searches
+extension SearchManager {
+    enum UserDefaultsKeys:StringLiteralType {
+        case recentSearch
+    }
+    
+    func saveRecentSearches (array : Array<Any>) {
+        let defaults = UserDefaults.standard
+        defaults.set(array, forKey: UserDefaultsKeys.recentSearch.rawValue)
+    }
+    
+    func retriveRecentSearch() -> Array<Any> {
+        let defaults = UserDefaults.standard
+        let myarray = defaults.stringArray(forKey: UserDefaultsKeys.recentSearch.rawValue) ?? [String]()
+        return myarray
+    }
+    
+    func clearOlderRecentSearchItem(){
+        var array = self.retriveRecentSearch() as! [String]
+        if array.count == kMaxRecentItems {
+            array.remove(at: kMaxRecentItems - 1)
+            self.saveRecentSearches(array: array)
+        }
+    }
+    
+    func saveRecentSearch(searchString : String) {
+        clearOlderRecentSearchItem()
+        var array = self.retriveRecentSearch() as! [String]
+        if !(array.contains(searchString)) && !searchString.isEmpty {
+            if array.count == 0 {
+                array.append(searchString)
+            }
+            else{
+                array.insert(searchString, at: 0)
+            }
+            self.saveRecentSearches(array: array)
+        }
     }
 }
