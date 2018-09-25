@@ -16,7 +16,7 @@ class NamePictureCell: UITableViewCell {
     
     var item: ListViewModelItem? {
         didSet {
-            guard let item = item as? ProfileViewModelNamePictureItem else {
+            guard let item = item as? MovieDetailsItem else {
                 return
             }
             
